@@ -9,6 +9,7 @@ Ensure you have consul agent and consul-template installed.  I'm testing with co
 Clone this repo:
 
 ```git clone https://github.com/j-oconnor/consul-example.git
+
 cd consul-example```
 
 Start consul in server mode advertising localhost
