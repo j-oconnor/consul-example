@@ -1,0 +1,12 @@
+{{$tag_filter:="www"}}
+{{range $i,$a:=services}}{{$path:=.Name}}{{range .Tags}}{{if eq . $tag_filter}}
+upstream {{$path}} { {{range $b,$c:=service $a.Name}}{{range .Tags}}{{$activeVersion:=key (print $a.Name "/activeVersion")}}{{if eq . $activeVersion}}
+ server {{$c.Address}}:{{$c.Port}};  #{{$activeVersion}}{{end}}{{end}}{{end}}
+{{end}}{{end}}{{ if .Tags | contains $tag_filter }}}{{end}}
+{{end}}
+
+{{range $i,$a:=services}}{{$path:=.Name}}{{range .Tags}}{{if eq . $tag_filter}}
+location ^~ /{{$path}} {
+ proxy_pass http://{{$path}};
+{{end}}{{end}}{{ if .Tags | contains $tag_filter }}}{{end}}
+{{end}}
