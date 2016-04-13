@@ -60,3 +60,10 @@ And our consul-template now shows upstreams set to V2 nodes.
 If we don't like the deploy, we can still rollback to v1 at this point with a simple KV update.
 
 `curl "http://localhost:8500/v1/kv/hello/activeVersion?dc=dc1" -X PUT -d "v1"`
+
+## Conclusion
+In a real use case, we'll run consul-template in a daemonized state, rendering new Nginx config on service/kv updates from Consul.  Additionally, consul-template can trigger an Nginx config reload after updates are rendered to the .conf file.  Details can be found on Consul Template github:  https://github.com/hashicorp/consul-template
+
+Additionally, we have used direct calls for registering dummy services via direct calls to the Consul catalog HTTP api.  In production, you nodes should register via the agent, either via a service registration config file or calls to the agent api.  https://www.consul.io/docs/agent/http/agent.html
+
+Finally, we omitted healthchecks in our example, which are critical to proper use of any service discovery tool.  Consul healthchecks are documented here (both for service and node level checks)  https://www.consul.io/docs/agent/checks.html.  
