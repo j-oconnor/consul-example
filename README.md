@@ -4,13 +4,14 @@ Walkthrough of sample blue/green deploy process using consul service tags and KV
 
 ## Setup
 
-Ensure you have consul agent and consul-template installed.  I'm testing with consul v0.6.3 and consul-template v0.12.0.  All commands assume they're on the PATH.
+Ensure you have consul agent and consul-template installed.  I'm testing with consul v0.6.3 and consul-template v0.12.0.  All provided, commands assume they're on the PATH.
 
 Clone this repo:
 
-```git clone https://github.com/j-oconnor/consul-example.git
-
-cd consul-example```
+```
+git clone https://github.com/j-oconnor/consul-example.git
+cd consul-example
+```
 
 Start consul in server mode advertising localhost
 
@@ -72,8 +73,8 @@ If we don't like the deploy, we can still rollback to v1 at this point with a si
 `curl "http://localhost:8500/v1/kv/hello/activeVersion?dc=dc1" -X PUT -d "v1"`
 
 ## Conclusion
-In a real use case, we'll run consul-template in a daemonized state, rendering new Nginx config on service/kv updates from Consul.  Additionally, consul-template can trigger an Nginx config reload after updates are rendered to the .conf file.  Details can be found on Consul Template github:  https://github.com/hashicorp/consul-template
+In a real use case, we'll run consul-template in a daemonized state, rendering new Nginx config on service/kv updates from Consul.  Additionally, consul-template can trigger an Nginx config reload after updates are rendered to the .conf file.  Details can be found on [Consul Template github](https://github.com/hashicorp/consul-template)
 
-Additionally, we have used direct calls for registering dummy services via direct calls to the Consul catalog HTTP api.  In production, you nodes should register via the agent, either via a service registration config file or calls to the agent api.  https://www.consul.io/docs/agent/http/agent.html
+Additionally, we have used direct calls for registering dummy services via direct calls to the Consul catalog HTTP api.  In production, you nodes should register via the agent, either via a service registration config file or calls to the agent api ([docs here](https://www.consul.io/docs/agent/http/agent.html))  Also, because these were "fake" services, we omitted healthchecks in our example, which are critical to proper use of any service discovery tool.  Consul healthchecks are documented [here](https://www.consul.io/docs/agent/checks.html) (both for service and node level checks).  
 
-Finally, we omitted healthchecks in our example, which are critical to proper use of any service discovery tool.  Consul healthchecks are documented here (both for service and node level checks)  https://www.consul.io/docs/agent/checks.html.  
+Finally, there are a probably dozens of ways to achieve similar results using Nginx.  You should definitely experiment to find the right one for your use case.
