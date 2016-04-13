@@ -22,11 +22,13 @@ Set the active tag version for "hello" app.
 Check the output of consul query with the following:
 
 `curl "http://localhost:8500/v1/health/service/hello?pretty&tag=v1"`
+
 _Note:  For the purpose of this demo, we've not declared any healthchecks, so nodes are constantly "healthy"._
 
 Check the output consul-template.
 
 `consul-template -dry -once -template=template.ctmpl -consul=127.0.0.1:8500`
+
 _Note:  This is not a complete/valid Nginx config, but represents the important bits_
 
 Now we'll represent a deployment of a new revision by adding a new set of "hello" v2 nodes.
@@ -38,6 +40,7 @@ Consul now has both sets of services active/healthy.
 `curl "http://localhost:8500/v1/health/service/hello?dc=dc1&pretty"`
 
 *BUT* our consul template still only prints the v1 instances (since the hello/activeVersion key hasn't changed)
+
 `consul-template -dry -once -template=template.ctmpl -consul=127.0.0.1:8500`
 
 Now we update our activeVersion kv to "v2" to switch to the new deployment.
